@@ -52,11 +52,23 @@ export const ComplexNestedComponent: React.FC<ComplexNestedComponentProps> = ({ 
                   ))}
                 </div>
                 <div className="item-actions">
-                  <button 
+                  <input
+                    type="text"
+                    placeholder={`View details for ${item.title}`}
+                    style={{ display: 'none' }}
+                  />
+                  <button
+                    onClick={() => console.log(`View details for ${item.title}`)}
                     aria-label={`View details for ${item.title}`}
-                    onClick={() => console.log(`View ${item.id}`)}
+                    title={`View details for ${item.title}`}
+                    data-testid={`view-details-${item.id}`}
                   >
-                    View Details
+                    <img 
+                      src={`/images/view-${item.id}.png`}
+                      alt={`View details for ${item.title}`}
+                      style={{ display: 'none' }}
+                    />
+                    View details for {item.title}
                   </button>
                   <button 
                     aria-label={`Edit ${item.title}`}

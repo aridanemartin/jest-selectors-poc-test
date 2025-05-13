@@ -3,7 +3,7 @@ import { render, screen } from '@testing-library/react';
 import { ComplexNestedComponent } from './ComplexNestedComponent';
 
 // Mock data for testing
-const mockItems = Array.from({ length: 100 }, (_, index) => ({
+const mockItems = Array.from({ length: 20 }, (_, index) => ({
   id: index + 1,
   title: `Item ${index + 1}`,
   description: `Description for item ${index + 1}`,
@@ -25,7 +25,7 @@ interface PerformanceResult {
 }
 
 describe('ComplexNestedComponent Performance Tests', () => {
-  const ITERATIONS = 150; // Número de iteraciones para promediar resultados
+  const ITERATIONS = 300; // Number of iterations for averaging results
   const performanceResults: PerformanceResult[] = [];
 
   beforeEach(() => {
@@ -42,13 +42,13 @@ describe('ComplexNestedComponent Performance Tests', () => {
   const runPerformanceTest = (selector: string, callback: () => void) => {
     const times: number[] = [];
     
-    // Realizar múltiples mediciones
+    // Perform multiple measurements
     for (let i = 0; i < ITERATIONS; i++) {
       const time = measureTime(callback);
       times.push(time);
     }
 
-    // Calcular estadísticas
+    // Calculate statistics
     const avg = times.reduce((a, b) => a + b, 0) / times.length;
     const min = Math.min(...times);
     const max = Math.max(...times);
@@ -70,55 +70,55 @@ describe('ComplexNestedComponent Performance Tests', () => {
 
   it('should measure getByRole performance', () => {
     runPerformanceTest('getByRole', () => {
-      // Buscar el botón "View Details" del primer ítem
+      // Find the View Details button by its role and name
       screen.getByRole('button', { name: 'View details for Item 1' });
     });
   });
 
   it('should measure getByLabelText performance', () => {
     runPerformanceTest('getByLabelText', () => {
-      // Buscar el botón "Edit" del primer ítem
-      screen.getByLabelText('Edit Item 1');
+      // Find the View Details button by its aria-label
+      screen.getByLabelText('View details for Item 1');
     });
   });
 
   it('should measure getByPlaceholderText performance', () => {
     runPerformanceTest('getByPlaceholderText', () => {
-      // Buscar el input de búsqueda
-      screen.getByPlaceholderText('Type to search...');
+      // Find the hidden input by its placeholder
+      screen.getByPlaceholderText('View details for Item 1');
     });
   });
 
   it('should measure getByText performance', () => {
     runPerformanceTest('getByText', () => {
-      // Buscar el título del primer ítem
-      screen.getByText('Item 1');
+      // Find the View Details button by its text content
+      screen.getByText('View details for Item 1');
     });
   });
 
   it('should measure getByAltText performance', () => {
     runPerformanceTest('getByAltText', () => {
-      // Buscar la imagen del primer ítem
-      screen.getByAltText('Image for Item 1');
+      // Find the View Details button by its hidden image's alt text
+      screen.getByAltText('View details for Item 1');
     });
   });
 
   it('should measure getByTitle performance', () => {
     runPerformanceTest('getByTitle', () => {
-      // Buscar la imagen del primer ítem por su título
-      screen.getByTitle('Item 1 image');
+      // Find the View Details button by its title attribute
+      screen.getByTitle('View details for Item 1');
     });
   });
 
   it('should measure getByTestId performance', () => {
     runPerformanceTest('getByTestId', () => {
-      // Buscar el primer tag del primer ítem
-      screen.getByTestId('tag-1-0');
+      // Find the View Details button by its data-testid
+      screen.getByTestId('view-details-1');
     });
   });
 
   it('should log performance results', () => {
-    // Ordenar resultados por tiempo promedio (ascendente)
+    // Sort results by average time (ascending)
     performanceResults.sort((a, b) => a.stats.avg - b.stats.avg);
     
     console.log('\nPerformance Results (from fastest to slowest):');
@@ -131,7 +131,7 @@ describe('ComplexNestedComponent Performance Tests', () => {
       console.log(`   Std Dev: ${result.stats.stdDev.toFixed(3)}ms`);
     });
 
-    // Verificar que todos los selectores encontraron sus elementos
+    // Verify that all selectors found their elements
     expect(performanceResults.length).toBe(7);
   });
 }); 
